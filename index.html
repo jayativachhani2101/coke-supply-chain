@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Coca-Cola Company - Global Supply Chain & Bottlers</title>
+  
+  <!-- Meta SEO -->
+  <meta name="description" content="Explore the interactive global supply chain and bottler distribution network of The Coca-Cola Company. View regional location bifurcations, headquarters telemetry, and a custom animated simulator.">
+  <meta name="keywords" content="Coca-Cola, Supply Chain, Bottlers, Interactive Map, Coca-Cola Headquarters, Circular Economy, rPET Recycling">
+  <meta name="author" content="Antigravity Web Design">
+  
+  <!-- Leaflet Map CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  
+  <!-- Custom Stylesheets -->
+  <link rel="stylesheet" href="styles/main.css">
+  
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Floating carbonation bubble particles background -->
+  <div class="bubble-background" id="bubbleBg"></div>
+
+  <!-- Glassmorphic Header & Navigation -->
+  <header>
+    <nav class="navbar" id="mainNavbar" aria-label="Main Navigation">
+      <a href="#hero" class="nav-brand" id="brandLogo">
+        <!-- SVG Red Coke Bottle Outline Logo -->
+        <svg class="nav-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M50 5C46 5 44 9 44 14C44 18 45.5 22 45.5 25C45.5 27 41.5 32 41.5 37C41.5 42 43 45 43 49C43 51 35 56 35 68C35 80 41 95 50 95C59 95 65 80 65 68C65 56 57 51 57 49C57 45 58.5 42 58.5 37C58.5 32 54.5 27 54.5 25C54.5 22 56 18 56 14C56 9 54 5 50 5Z" fill="#F40009"/>
+          <path d="M50 20C47 20 46 22 46 25C46 28 47.5 30 47.5 32C47.5 34 44 38 44 42C44 46 45 48 45 51" stroke="#FFF" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+        <span>The Coca-Cola <span class="highlight-red">Company</span></span>
+      </a>
+      
+      <!-- Hamburger Toggle for Mobile -->
+      <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navMenu" aria-label="Toggle navigation menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+
+      <!-- Nav Menu list -->
+      <ul class="nav-menu" id="navMenu">
+        <li><a href="#hero" class="nav-link active">Home</a></li>
+        <li><a href="#hq" class="nav-link">Global HQ</a></li>
+        <li><a href="#supply-chain" class="nav-link">Supply Chain</a></li>
+        <li><a href="#map-hub" class="nav-link">Bottlers Map</a></li>
+        <li><a href="#bifurcation" class="nav-link">Regions</a></li>
+        <li><a href="#map-hub" class="nav-link nav-cta">Explore Map</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <!-- Section 1: Hero Intro -->
+    <section id="hero" aria-label="Introduction Page">
+      <div class="container hero-wrapper">
+        <div class="hero-content">
+          <div class="tagline">
+            <i data-lucide="globe" style="width:14px; height:14px;"></i>
+            Global Bottling Operations
+          </div>
+          <h1>Refreshing the World,<br><span class="highlight-red">One Connection</span> at a Time.</h1>
+          <p>Go inside the dynamic global operational footprint of The Coca-Cola Company. Trace our ingredients from secret concentrate formulas to purified local sourcing, packaging speed, dynamic logistics, and loop recyclability.</p>
+          <div class="hero-buttons">
+            <a href="#supply-chain" class="btn btn-primary" id="btnExplore">
+              <span>Trace Supply Chain</span>
+              <i data-lucide="arrow-right"></i>
+            </a>
+            <a href="#map-hub" class="btn btn-secondary" id="btnMap">
+              <span>View Global Map</span>
+              <i data-lucide="map-pin"></i>
+            </a>
+          </div>
+        </div>
+        
+        <div class="hero-visual">
+          <div class="visual-backdrop"></div>
+          <div class="visual-canvas-container">
+            <div class="visual-card-overlay">
+              <i data-lucide="sparkles" style="color: var(--coke-red); width: 22px; height: 22px;"></i>
+              <div>
+                <h4 style="font-size: 0.85rem; font-weight:600;">Operational Telemetry</h4>
+                <p style="font-size: 0.7rem; color: var(--text-secondary);">Real-time factory rendering active</p>
+              </div>
+            </div>
+            
+            <!-- Dynamic 3D Floating Can Canvas -->
+            <canvas id="heroCanvas"></canvas>
+            
+            <div class="visual-stats-grid">
+              <div class="visual-stat-card">
+                <h3 class="stat-count" data-target="200" data-suffix="+">0+</h3>
+                <p>Countries</p>
+              </div>
+              <div class="visual-stat-card">
+                <h3 class="stat-count" data-target="900" data-suffix="+">0+</h3>
+                <p>Bottlers</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: Global Headquarters Profile & Coordinates Telemetry -->
+    <section id="hq" aria-labelledby="hqHeading">
+      <div class="container hq-layout">
+        
+        <!-- HQ corporate facts layout -->
+        <div class="hq-info-card">
+          <div class="hq-badge">
+            <i data-lucide="landmark"></i>
+            Strategic Headquarters
+          </div>
+          <h3 id="hqHeading">Atlanta Global Plaza</h3>
+          <div class="hq-address">
+            <i data-lucide="map-pin" style="color: var(--coke-red); width: 14px; height: 14px;"></i>
+            <span>One Coca-Cola Plaza, Atlanta, GA 30313</span>
+          </div>
+          
+          <p class="hq-description">Established in Georgia in 1886, our 35-acre sprawling headquarters campus anchors all executive leadership, formula stewardship, and brand authorization. More than a workspace, it represents our heritage and guides our worldwide sustainable framework.</p>
+          
+          <div class="hq-features-list">
+            <div class="hq-feature-item">
+              <div class="hq-feature-icon"><i data-lucide="lock" style="width: 14px; height:14px;"></i></div>
+              <div class="hq-feature-text"><strong>Formula Stewardship:</strong> Houses the secure archives and physical vaults containing the secret formula concentrate recipe.</div>
+            </div>
+            <div class="hq-feature-item">
+              <div class="hq-feature-icon"><i data-lucide="leaf" style="width: 14px; height:14px;"></i></div>
+              <div class="hq-feature-text"><strong>LEED Sustainability:</strong> Designed with zero-waste targets, water replenishment, and solar-power green rooftops.</div>
+            </div>
+            <div class="hq-feature-item">
+              <div class="hq-feature-icon"><i data-lucide="award" style="width: 14px; height:14px;"></i></div>
+              <div class="hq-feature-text"><strong>Governance:</strong> Sets packaging targets, brand guidelines, and ethical supply audits for global franchise bottlers.</div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- HQ animated radar visualizer -->
+        <div class="hq-map-visualizer">
+          <div class="hq-map-graphic">
+            <div class="grid-lines"></div>
+            <!-- Concentric glowing radar rings -->
+            <div class="hq-radar"></div>
+            <div class="hq-radar-2"></div>
+            
+            <!-- Target lock dot -->
+            <div class="hq-target">
+              <div class="hq-target-ring"></div>
+              <div class="hq-target-label">COCA-COLA_HQ: ACTIVE</div>
+            </div>
+          </div>
+          
+          <div class="hq-coordinates-dashboard">
+            <div class="hq-coordinate-item">
+              <span>Latitude</span>
+              <strong>33.7715° N</strong>
+            </div>
+            <div class="hq-coordinate-item">
+              <span>Longitude</span>
+              <strong>84.4015° W</strong>
+            </div>
+            <div class="hq-coordinate-item">
+              <span>Campus Scale</span>
+              <strong>35 Acres</strong>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+    </section>
+
+    <!-- Section 2: Animated Supply Chain Flow (The Video Showcase Player) -->
+    <section id="supply-chain" aria-labelledby="supplyChainHeading">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Operative Process</span>
+          <h2 class="section-title" id="supplyChainHeading">The Supply Chain Simulator</h2>
+        </div>
+        
+        <div class="supply-chain-layout">
+          <!-- 16:10 Premium Video player HUD and canvas -->
+          <div class="video-interface">
+            <div class="video-screen" id="videoScreenContainer">
+              
+              <!-- HTML5 Interactive Canvas Animation -->
+              <canvas id="supplyChainCanvas"></canvas>
+              
+              <!-- Video HUD layer -->
+              <div class="video-hud" id="videoHud">
+                <div class="video-header">
+                  <div class="video-live-badge">
+                    <span></span>
+                    Live Simulation
+                  </div>
+                  <div class="video-hud-title">COKE_SUPPLY_FLOW.EXE</div>
+                </div>
+                
+                <!-- Huge Play Overlay in the center -->
+                <button class="video-center-play" id="centerPlayBtn" aria-label="Play animated supply chain video">
+                  <i data-lucide="play" style="fill: white; color: white;"></i>
+                </button>
+                
+                <div style="font-size: 0.75rem; color: rgba(255, 255, 255, 0.4); text-transform: uppercase;">
+                  Double-click screen to Toggle Play / Tap Stages below to seek
+                </div>
+              </div>
+            </div>
+            
+            <!-- Video Control Bar -->
+            <div class="video-controls">
+              <!-- Slider timelines -->
+              <div class="scrubber-container">
+                <label for="progressBar" class="sr-only" style="display:none;">Timeline Progress</label>
+                <input type="range" id="progressBar" class="timeline-slider" min="0" max="100" value="0" step="0.1">
+                <span class="video-time-label" id="timeLabel">00:00 / 01:40</span>
+              </div>
+              
+              <div class="control-buttons-row">
+                <div class="left-ctrls">
+                  <button class="ctrl-btn" id="videoPlayBtn" aria-label="Play / Pause"><i data-lucide="play"></i></button>
+                  <button class="ctrl-btn" id="volumeBtn" aria-label="Mute / Unmute"><i data-lucide="volume-x"></i></button>
+                  <div class="volume-container">
+                    <label for="volumeSlider" class="sr-only" style="display:none;">Volume</label>
+                    <input type="range" id="volumeSlider" class="volume-slider" min="0" max="100" value="0">
+                  </div>
+                </div>
+                <div class="right-ctrls">
+                  <span class="video-badge">1080P HD</span>
+                  <span class="video-badge" style="color: var(--coke-red); font-weight:700;">60 FPS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Sidebar stepcards row -->
+          <div class="supply-chain-steps" id="stepsAccordion">
+            <!-- Step 1 -->
+            <div class="step-card active" data-step="0" role="button" tabindex="0">
+              <div class="step-number-badge">1</div>
+              <div class="step-card-content">
+                <h3>Concentrate Sourcing</h3>
+                <p>Crafting the highly guarded secret formula concentrate under corporate stewardship.</p>
+                <div class="step-details-drawer">
+                  <ul>
+                    <li>Blended under strict confidentiality at Coca-Cola corporate facilities.</li>
+                    <li>Shipped globally via thermal sealed micro-controlled logistics paths.</li>
+                    <li>Saves transport carbon by shipping raw concentrate rather than full beverage weight.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="step-card" data-step="1" role="button" tabindex="0">
+              <div class="step-number-badge">2</div>
+              <div class="step-card-content">
+                <h3>Water Prep & Syrup Blend</h3>
+                <p>Purifying local municipal water and combining with sweetening syrup.</p>
+                <div class="step-details-drawer">
+                  <ul>
+                    <li>Water undergoes rigorous 3-barrier reverse osmosis and carbon filtering.</li>
+                    <li>Local cane/beet sugar blended with pure water to produce simple syrup.</li>
+                    <li>Concentrate added and dynamically carbonated under pressurized CO2.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Step 3 -->
+            <div class="step-card" data-step="2" role="button" tabindex="0">
+              <div class="step-number-badge">3</div>
+              <div class="step-card-content">
+                <h3>Precision Packaging</h3>
+                <p>High-speed monobloc filling, carbonating, and crowning at 100,000 cases daily.</p>
+                <div class="step-details-drawer">
+                  <ul>
+                    <li>Bottles blown from preforms on-site to reduce empty shipment logs.</li>
+                    <li>Filled at near-freezing temperatures to lock in optimal carbonation.</li>
+                    <li>Laser-guided crown capping and high-precision fill weight safety checking.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Step 4 -->
+            <div class="step-card" data-step="3" role="button" tabindex="0">
+              <div class="step-number-badge">4</div>
+              <div class="step-card-content">
+                <h3>Smart Logistics Fleet</h3>
+                <p>Dynamic GPS fleet optimization delivering beverages to millions of locations.</p>
+                <div class="step-details-drawer">
+                  <ul>
+                    <li>Dynamic warehouse systems coordinate pallet automated laser AGVs.</li>
+                    <li>Routing algorithms cut shipping distances and greenhouse emissions.</li>
+                    <li>Bespoke micro-distribution cells empower local youth and female entrepreneurs.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Step 5 -->
+            <div class="step-card" data-step="4" role="button" tabindex="0">
+              <div class="step-number-badge">5</div>
+              <div class="step-card-content">
+                <h3>Closed-Loop Circularity</h3>
+                <p>Securing bottle-to-bottle food-grade rPET to achieve a World Without Waste.</p>
+                <div class="step-details-drawer">
+                  <ul>
+                    <li>Recover and recycle 100% of packaging equivalence by 2030 target.</li>
+                    <li>Used containers crushed, washed, and pelletized into food-grade plastic.</li>
+                    <li>Re-fed into Step 3 preform blowing, minimizing virgin plastics usage.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Global Interactive Map Hub -->
+    <section id="map-hub" aria-labelledby="mapHubHeading">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Geographic Network</span>
+          <h2 class="section-title" id="mapHubHeading">Global Bottling Partners</h2>
+        </div>
+        
+        <div class="map-layout">
+          <!-- Leaflet Viewport -->
+          <div class="map-viewport-wrapper">
+            <div id="leafletMap"></div>
+            
+            <!-- Map controls row overlays -->
+            <div class="map-control-overlay">
+              <button class="map-btn active" data-region="all">Global</button>
+              <button class="map-btn" data-region="north-america">North America</button>
+              <button class="map-btn" data-region="latin-america">Latin America</button>
+              <button class="map-btn" data-region="europe">Europe</button>
+              <button class="map-btn" data-region="africa-me">Africa/ME</button>
+              <button class="map-btn" data-region="asia-pacific">Asia-Pacific</button>
+            </div>
+          </div>
+          
+          <!-- Sidebar profile information displays -->
+          <aside class="map-sidebar-panel" id="mapSidebar" aria-label="Bottler Profile Sidebar">
+            <!-- Prompt view: Shows before clicking map markers -->
+            <div class="sidebar-prompt-view" id="sidebarPromptView">
+              <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--coke-red)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <h3>Geographic Telemetry</h3>
+              <p style="font-size: 0.85rem; margin-top: 0.5rem; line-height: 1.5;">Select any glowing regional map marker to load its bottling plants directory, local staff counts, and green initiative profile.</p>
+            </div>
+            
+            <!-- Profile detailed view (filled dynamically via JS) -->
+            <div class="sidebar-profile-view" id="sidebarProfileView">
+              <!-- Content loaded via js/map.js -->
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 4: Region-wise Bifurcation Section -->
+    <section id="bifurcation" aria-labelledby="bifurcationHeading">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-subtitle">Market Bifurcation</span>
+          <h2 class="section-title" id="bifurcationHeading">Territorial Distribution Zones</h2>
+        </div>
+        
+        <div class="bifurcation-layout">
+          <div class="region-grid">
+            
+            <!-- Region 1: North America -->
+            <div class="region-card" style="--region-color: var(--color-na);" onclick="linkRegionCardToMap('north-america')" role="button" tabindex="0">
+              <div>
+                <h4>North America <i data-lucide="flag"></i></h4>
+                <p class="region-desc">The historic center for brand operations. Pioneering high-speed direct-store logistics and sustainable transport EV trucks.</p>
+              </div>
+              <div class="region-stats">
+                <span class="region-stat-lbl">Global share</span>
+                <span class="region-stat-val">30% Volume</span>
+              </div>
+            </div>
+            
+            <!-- Region 2: Latin America -->
+            <div class="region-card" style="--region-color: var(--color-la);" onclick="linkRegionCardToMap('latin-america')" role="button" tabindex="0">
+              <div>
+                <h4>Latin America <i data-lucide="trending-up"></i></h4>
+                <p class="region-desc">The world's highest per-capita beverage consumption zone. Managed with returnable glass bottling closed loops.</p>
+              </div>
+              <div class="region-stats">
+                <span class="region-stat-lbl">Global share</span>
+                <span class="region-stat-val">28% Volume</span>
+              </div>
+            </div>
+            
+            <!-- Region 3: Europe -->
+            <div class="region-card" style="--region-color: var(--color-eu);" onclick="linkRegionCardToMap('europe')" role="button" tabindex="0">
+              <div>
+                <h4>Europe & Central Asia <i data-lucide="shield-check"></i></h4>
+                <p class="region-desc">Leaders in net-zero greenhouse plant models. Fully transitioned product lines in Western territories to 100% recycled rPET plastics.</p>
+              </div>
+              <div class="region-stats">
+                <span class="region-stat-lbl">Global share</span>
+                <span class="region-stat-val">18% Volume</span>
+              </div>
+            </div>
+            
+            <!-- Region 4: Africa & ME -->
+            <div class="region-card" style="--region-color: var(--color-af);" onclick="linkRegionCardToMap('africa-me')" role="button" tabindex="0">
+              <div>
+                <h4>Africa & Middle East <i data-lucide="sun"></i></h4>
+                <p class="region-desc">Expanding localized logistics via 3,000+ micro-distribution cells that empower local entrepreneurs and water wells.</p>
+              </div>
+              <div class="region-stats">
+                <span class="region-stat-lbl">Global share</span>
+                <span class="region-stat-val">11% Volume</span>
+              </div>
+            </div>
+            
+            <!-- Region 5: Asia-Pacific -->
+            <div class="region-card" style="--region-color: var(--color-ap);" onclick="linkRegionCardToMap('asia-pacific')" role="button" tabindex="0">
+              <div>
+                <h4>Asia-Pacific <i data-lucide="cpu"></i></h4>
+                <p class="region-desc">Highly diverse automated operations. Employs robotics, deep telemetry routing, and vending machines across dense mega-cities.</p>
+              </div>
+              <div class="region-stats">
+                <span class="region-stat-lbl">Global share</span>
+                <span class="region-stat-val">13% Volume</span>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+  </main>
+
+  <!-- Global Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-layout">
+        <a href="#hero" class="footer-brand">
+          <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:28px;">
+            <path d="M50 5C46 5 44 9 44 14C44 18 45.5 22 45.5 25C45.5 27 41.5 32 41.5 37C41.5 42 43 45 43 49C43 51 35 56 35 68C35 80 41 95 50 95C59 95 65 80 65 68C65 56 57 51 57 49C57 45 58.5 42 58.5 37C58.5 32 54.5 27 54.5 25C54.5 22 56 18 56 14C56 9 54 5 50 5Z" fill="#F40009"/>
+          </svg>
+          <span>The Coca-Cola <span class="highlight-red">Company</span></span>
+        </a>
+        
+        <ul class="footer-nav" aria-label="Footer Nav Links">
+          <li><a href="#hero" class="footer-nav-link">Home</a></li>
+          <li><a href="#supply-chain" class="footer-nav-link">Supply Chain</a></li>
+          <li><a href="#map-hub" class="footer-nav-link">Bottlers Map</a></li>
+          <li><a href="#bifurcation" class="footer-nav-link">Regions Directory</a></li>
+          <li><a href="#hq" class="footer-nav-link">Strategic Headquarters</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-bottom">
+        <p>&copy; 2026 The Coca-Cola Company. Created as an immersive interactive operational showcase.</p>
+        <p style="color: rgba(255,255,255,0.25);">Developed with Premium Vanilla Web Stack by Antigravity</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Leaflet Map JS script library -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  
+  <!-- Custom JS Modules -->
+  <script src="js/data.js"></script>
+  <script src="js/supplyChain.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+</html>
