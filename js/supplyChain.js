@@ -214,15 +214,33 @@ class SupplyChainSimulator {
 
   syncSidebarWithStage(stageIndex) {
     const stepCards = document.querySelectorAll('.step-card');
+    const scrollContainer = document.querySelector('.steps-scroll-container');
+    const videoInterface = document.querySelector('.video-interface');
+
     stepCards.forEach((card, idx) => {
       if (idx === stageIndex) {
         card.classList.add('active');
-        // Scroll step card into view inside its parent if necessary
-        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        // Auto-scroll active card into view within the scrollable panel
+        if (scrollContainer) {
+          const cardTop = card.offsetTop - scrollContainer.offsetTop;
+          scrollContainer.scrollTo({
+            top: cardTop - 8,
+            behavior: 'smooth'
+          });
+        }
       } else {
         card.classList.remove('active');
       }
     });
+
+    // Toggle red glow border on the video interface during active stages
+    if (videoInterface) {
+      videoInterface.classList.add('stage-active');
+      clearTimeout(this._glowTimeout);
+      this._glowTimeout = setTimeout(() => {
+        videoInterface.classList.remove('stage-active');
+      }, 2000);
+    }
   }
 
   updateUI() {
