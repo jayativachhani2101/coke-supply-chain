@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Truck Fill Optimisation — Coca-Cola Logistics AI</title>
+  <meta name="description" content="Animated business explainer for Coca-Cola's Truck Fill Optimisation — an AI-powered constraint-based 3D truck stacking and SKU adjustment engine that transforms container utilisation from 50% to 100%.">
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Slide Deck Styles -->
+  <link rel="stylesheet" href="styles/slides.css">
+</head>
+<body>
+
+  <!-- Top Progress Bar -->
+  <div class="progress-bar"><div class="progress-fill"></div></div>
+
+  <!-- ============================================================
+       SLIDE DECK
+       ============================================================ -->
+  <div class="slide-deck">
+
+    <!-- ──────────────────────────────────────────────────────────
+         SLIDE 1 — TITLE HERO
+         ────────────────────────────────────────────────────────── -->
+    <div class="slide active" data-slide="0">
+      <div class="slide-corner top-left"></div>
+      <div class="slide-corner bottom-right"></div>
+
+      <div class="slide-inner title-slide">
+        <div class="title-badge">
+          <span class="badge-dot"></span>
+          AI-Powered Logistics
+        </div>
+
+        <h1 class="title-heading">
+          Truck Fill<br><span class="red">Optimisation</span>
+        </h1>
+
+        <p class="title-subtitle">
+          A constraint-based 3D truck stacking and SKU adjustment engine — transforming container utilisation across Coca-Cola's global dispatch network.
+        </p>
+
+        <!-- Animated truck SVG -->
+        <div class="title-truck-animation">
+          <svg class="title-truck-svg" viewBox="0 0 360 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Road line -->
+            <line x1="0" y1="102" x2="360" y2="102" stroke="rgba(255,255,255,0.08)" stroke-width="2" stroke-dasharray="8 6"/>
+            <!-- Container body -->
+            <rect x="20" y="30" width="200" height="68" rx="6" class="truck-body-fill"/>
+            <rect x="20" y="30" width="200" height="68" rx="6" class="truck-outline"/>
+            <!-- Container fill level indicator -->
+            <rect x="24" y="34" width="192" height="60" rx="3" fill="rgba(244,0,9,0.25)"/>
+            <!-- Grid lines on container -->
+            <line x1="84" y1="34" x2="84" y2="94" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <line x1="148" y1="34" x2="148" y2="94" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+            <!-- Cab -->
+            <rect x="220" y="50" width="60" height="48" rx="6" class="truck-body-fill"/>
+            <rect x="220" y="50" width="60" height="48" rx="6" class="truck-outline"/>
+            <!-- Windshield -->
+            <rect x="232" y="56" width="38" height="18" rx="3" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+            <!-- Headlight -->
+            <rect x="276" y="80" width="6" height="8" rx="2" fill="rgba(245,158,11,0.6)"/>
+            <!-- Wheels -->
+            <circle cx="60" cy="102" r="12" class="truck-wheel"/>
+            <circle cx="60" cy="102" r="5" fill="rgba(255,255,255,0.06)"/>
+            <circle cx="180" cy="102" r="12" class="truck-wheel"/>
+            <circle cx="180" cy="102" r="5" fill="rgba(255,255,255,0.06)"/>
+            <circle cx="252" cy="102" r="12" class="truck-wheel"/>
+            <circle cx="252" cy="102" r="5" fill="rgba(255,255,255,0.06)"/>
+            <!-- Coca-Cola label -->
+            <text x="120" y="70" fill="rgba(255,255,255,0.5)" font-size="11" font-weight="700" text-anchor="middle" font-family="Inter, sans-serif">COCA-COLA</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- ──────────────────────────────────────────────────────────
+         SLIDE 2 — THE PROBLEM
+         ────────────────────────────────────────────────────────── -->
+    <div class="slide" data-slide="1">
+      <div class="slide-corner top-left"></div>
+      <div class="slide-corner bottom-right"></div>
+
+      <div class="slide-inner">
+        <div class="problem-layout">
+          <!-- Left: Text content -->
+          <div>
+            <div class="slide-section-label">
+              <i data-lucide="alert-triangle" style="width:14px; height:14px;"></i>
+              The Problem
+            </div>
+            <h2 class="slide-heading">Containers Dispatched<br><span style="color: var(--danger-red);">Partially Filled</span></h2>
+            <p class="slide-text">
+              Without SKU-level visibility into truck loading, dispatch decisions are made blind — resulting in half-loaded containers, duplicated trips, and avoidable logistics spend across the bottler network.
+            </p>
+
+            <div class="problem-stats">
+              <div class="problem-stat-row">
+                <div class="problem-stat-icon">
+                  <i data-lucide="package-x" style="width:20px;height:20px;"></i>
+                </div>
+                <div class="problem-stat-content">
+                  <h4>~50% Average Container Fill Rate</h4>
+                  <p>Trucks leaving warehouses at half capacity every dispatch cycle</p>
+                </div>
+              </div>
+              <div class="problem-stat-row">
+                <div class="problem-stat-icon">
+                  <i data-lucide="eye-off" style="width:20px;height:20px;"></i>
+                </div>
+                <div class="problem-stat-content">
+                  <h4>Zero SKU-Level Load Visibility</h4>
+                  <p>No granular view of which products occupy what space in each container</p>
+                </div>
+              </div>
+              <div class="problem-stat-row">
+                <div class="problem-stat-icon">
+                  <i data-lucide="banknote" style="width:20px;height:20px;"></i>
+                </div>
+                <div class="problem-stat-content">
+                  <h4>Revenue Leakage Per Trip</h4>
+                  <p>Every half-loaded dispatch doubles the cost-per-unit delivered</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Half-loaded truck visuals -->
+          <div class="problem-visual">
+            <div class="problem-truck-card">
+              <div class="problem-truck-label">
+                <span>Container A — WK1 Dispatch</span>
+                <span class="fill-pct" data-count-to="52" data-count-suffix="%" data-count-decimals="0">0%</span>
+              </div>
+              <div class="fill-bar-track">
+                <div class="fill-bar-level danger animate-fill" data-fill="52"></div>
+              </div>
+            </div>
+            <div class="problem-truck-card">
+              <div class="problem-truck-label">
+                <span>Container B — WK2 Dispatch</span>
+                <span class="fill-pct" data-count-to="47" data-count-suffix="%" data-count-decimals="0">0%</span>
+              </div>
+              <div class="fill-bar-track">
+                <div class="fill-bar-level danger animate-fill" data-fill="47"></div>
+              </div>
+            </div>
+            <div class="problem-truck-card" style="border-color: rgba(239, 68, 68, 0.2); background: rgba(239, 68, 68, 0.04);">
+              <div class="problem-truck-label">
+                <span style="color: var(--danger-red); font-weight: 700;">Wasted Capacity Per Cycle</span>
+                <span class="fill-pct" data-count-to="50" data-count-suffix="%" data-count-decimals="0">0%</span>
+              </div>
+              <div class="fill-bar-track">
+                <div class="fill-bar-level danger animate-fill" data-fill="50" style="opacity: 0.5;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ──────────────────────────────────────────────────────────
+         SLIDE 3 — THE SOLUTION
+         ────────────────────────────────────────────────────────── -->
+    <div class="slide" data-slide="2">
+      <div class="slide-corner top-left"></div>
+      <div class="slide-corner bottom-right"></div>
+
+      <div class="slide-inner solution-layout">
+        <div class="slide-section-label" style="justify-content: center;">
+          <i data-lucide="cpu" style="width:14px; height:14px;"></i>
+          The Solution
+        </div>
+        <h2 class="slide-heading" style="text-align:center;">Constraint-Based 3D Stacking<br>& <span style="color: var(--coke-red);">SKU Adjustment Engine</span></h2>
+        <p class="slide-text" style="text-align:center; max-width:680px; margin: 0 auto 0;">
+          An intelligent optimization engine embedded directly in the planning workflow — bridging Bottlers, Coke Planners, and Dispatchers to maximize every cubic metre of container space.
+        </p>
+
+        <!-- Engine feature box -->
+        <div class="solution-engine-box">
+          <div class="engine-title">TruckFill AI Engine</div>
+          <div class="engine-desc">Multi-constraint optimization solving weight limits, volume packing, SKU compatibility, delivery windows, and route sequencing in real-time.</div>
+
+          <div class="engine-features">
+            <div class="engine-feature">
+              <div class="engine-feature-icon">
+                <i data-lucide="box" style="width:18px;height:18px;"></i>
+              </div>
+              <h4>3D Bin Packing</h4>
+              <p>Volumetric space optimization with mixed SKU stacking constraints</p>
+            </div>
+            <div class="engine-feature">
+              <div class="engine-feature-icon">
+                <i data-lucide="calendar-range" style="width:18px;height:18px;"></i>
+              </div>
+              <h4>Cross-Week Balancing</h4>
+              <p>Hold or pull SKUs across WK1/WK2 to fill containers fully</p>
+            </div>
+            <div class="engine-feature">
+              <div class="engine-feature-icon">
+                <i data-lucide="scale" style="width:18px;height:18px;"></i>
+              </div>
+              <h4>Weight Distribution</h4>
+              <p>Axle-load compliance and centre-of-gravity management</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Workflow diagram -->
+        <div class="workflow-row">
+          <div class="workflow-node">
+            <div class="workflow-node-icon bottler">
+              <i data-lucide="factory" style="width:16px;height:16px;"></i>
+            </div>
+            <span>Bottlers</span>
+          </div>
+          <div class="workflow-arrow">
+            <i data-lucide="arrow-right" style="width:20px;height:20px;"></i>
+          </div>
+          <div class="workflow-node" style="border-color: rgba(244,0,9,0.2); background: rgba(244,0,9,0.06);">
+            <div class="workflow-node-icon engine">
+              <i data-lucide="brain" style="width:16px;height:16px;"></i>
+            </div>
+            <span style="color: var(--coke-red); font-weight: 700;">TruckFill Engine</span>
+          </div>
+          <div class="workflow-arrow">
+            <i data-lucide="arrow-right" style="width:20px;height:20px;"></i>
+          </div>
+          <div class="workflow-node">
+            <div class="workflow-node-icon planner">
+              <i data-lucide="bar-chart-3" style="width:16px;height:16px;"></i>
+            </div>
+            <span>Coke Planners</span>
+          </div>
+          <div class="workflow-arrow">
+            <i data-lucide="arrow-right" style="width:20px;height:20px;"></i>
+          </div>
+          <div class="workflow-node">
+            <div class="workflow-node-icon dispatcher">
+              <i data-lucide="truck" style="width:16px;height:16px;"></i>
+            </div>
+            <span>Dispatchers</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ──────────────────────────────────────────────────────────
+         SLIDE 4 — BEFORE vs AFTER
+         ────────────────────────────────────────────────────────── -->
+    <div class="slide" data-slide="3">
+      <div class="slide-corner top-left"></div>
+      <div class="slide-corner bottom-right"></div>
+
+      <div class="slide-inner">
+        <div style="text-align:center; margin-bottom: 40px;">
+          <div class="slide-section-label" style="justify-content: center;">
+            <i data-lucide="git-compare" style="width:14px; height:14px;"></i>
+            Transformation
+          </div>
+          <h2 class="slide-heading" style="text-align:center;">Before vs <span style="color: var(--success-green);">After</span></h2>
+        </div>
+
+        <div class="comparison-layout">
+          <!-- BEFORE Panel -->
+          <div class="comparison-panel before">
+            <div class="panel-badge before-badge">
+              <i data-lucide="x-circle" style="width:12px;height:12px;"></i>
+              Before Optimisation
+            </div>
+            <div class="panel-heading">Half-Loaded Dispatches</div>
+
+            <div class="comparison-truck-row">
+              <div class="comparison-truck-header">
+                <span class="week-label">Week 1 — Container A</span>
+                <span class="pct danger" data-count-to="50" data-count-suffix="%" data-count-decimals="0">0%</span>
+              </div>
+              <div class="fill-bar-track">
+                <div class="fill-bar-level danger animate-fill" data-fill="50"></div>
+              </div>
+            </div>
+
+            <div class="comparison-truck-row">
+              <div class="comparison-truck-header">
+                <span class="week-label">Week 2 — Container B</span>
+                <span class="pct danger" data-count-to="48" data-count-suffix="%" data-count-decimals="0">0%</span>
+              </div>
+              <div class="fill-bar-track">
+                <div class="fill-bar-level danger animate-fill" data-fill="48"></div>
+              </div>
+            </div>
+
+            <div class="comparison-footnote before-note">
+              <strong>Result:</strong> 2 trips dispatched at ≈50% capacity. Double the logistics cost per unit. No SKU coordination between weeks.
+            </div>
+          </div>
+
+          <!-- Divider -->
+          <div class="comparison-divider">
+            <div class="divider-line">
+              <div class="divider-vs">VS</div>
+            </div>
+          </div>
+
+          <!-- AFTER Panel -->
+          <div class="comparison-panel after">
+            <div class="panel-badge after-badge">
+              <i data-lucide="check-circle-2" style="width:12px;height:12px;"></i>
+              After Optimisation
+            </div>
+            <div class="panel-heading">Fully Loaded Dispatches</div>
+
+            <div class="comparison-truck-row">
+              <div class="comparison-truck-header">
+                <span class="week-label">Week 1 — Container A</span>
+                <span class="pct success" data-count-to="98" data-count-suffix="%" data-count-decimals="0">0%</span>
+              </div>
+              <div class="fill-bar-track">
+                <div class="fill-bar-level success animate-fill" data-fill="98"></div>
+              </div>
+            </div>
+
+            <div class="comparison-truck-row">
+              <div class="comparison-truck-header">
+                <span class="week-label">Week 2 — Container B</span>
+                <span class="pct success" data-count-to="96" data-count-suffix="%" data-count-decimals="0">0%</span>
+              </div>
+              <div class="fill-bar-track">
+                <div class="fill-bar-level success animate-fill" data-fill="96"></div>
+              </div>
+            </div>
+
+            <div class="comparison-footnote after-note">
+              <strong>Result:</strong> SKUs held/pulled across WK1↔WK2 — both containers dispatch at near-100%. Half the trips, same volume delivered.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ──────────────────────────────────────────────────────────
+         SLIDE 5 — USER PERSONAS
+         ────────────────────────────────────────────────────────── -->
+    <div class="slide" data-slide="4">
+      <div class="slide-corner top-left"></div>
+      <div class="slide-corner bottom-right"></div>
+
+      <div class="slide-inner">
+        <div style="text-align:center;">
+          <div class="slide-section-label" style="justify-content: center;">
+            <i data-lucide="users" style="width:14px; height:14px;"></i>
+            Stakeholder Personas
+          </div>
+          <h2 class="slide-heading" style="text-align:center;">Who Uses <span style="color: var(--coke-red);">TruckFill?</span></h2>
+          <p class="slide-text" style="text-align:center; max-width:600px; margin: 0 auto;">
+            Three distinct user personas interact with the engine at different cadences, each with aligned but differentiated objectives.
+          </p>
+        </div>
+
+        <div class="personas-grid">
+          <!-- Bottler -->
+          <div class="persona-card">
+            <div class="persona-icon-wrapper bottler-icon">
+              <i data-lucide="factory" style="width:24px;height:24px;"></i>
+            </div>
+            <div class="persona-name">Bottler</div>
+            <div class="persona-cadence">
+              <span class="cadence-dot weekly"></span>
+              Weekly Cadence
+            </div>
+            <ul class="persona-objectives">
+              <li>Submit weekly order volumes and SKU breakdowns</li>
+              <li>Maximise order fulfilment accuracy across product lines</li>
+              <li>Accept/reject engine-proposed SKU adjustments per delivery window</li>
+              <li>Visibility into container allocation for their orders</li>
+            </ul>
+          </div>
+
+          <!-- Planner -->
+          <div class="persona-card">
+            <div class="persona-icon-wrapper planner-icon">
+              <i data-lucide="bar-chart-3" style="width:24px;height:24px;"></i>
+            </div>
+            <div class="persona-name">Coke Planner</div>
+            <div class="persona-cadence">
+              <span class="cadence-dot daily"></span>
+              Daily Cadence
+            </div>
+            <ul class="persona-objectives">
+              <li>Optimise aggregate fill rates across all dispatches</li>
+              <li>Manage SKU hold/pull decisions across weekly boundaries</li>
+              <li>Balance demand signals against container capacity constraints</li>
+              <li>Monitor fill rate KPIs and exception alerts in real-time</li>
+            </ul>
+          </div>
+
+          <!-- Transport Planner -->
+          <div class="persona-card">
+            <div class="persona-icon-wrapper transport-icon">
+              <i data-lucide="truck" style="width:24px;height:24px;"></i>
+            </div>
+            <div class="persona-name">Transport Planner</div>
+            <div class="persona-cadence">
+              <span class="cadence-dot daily"></span>
+              Daily Cadence
+            </div>
+            <ul class="persona-objectives">
+              <li>Minimise total logistics cost per dispatched load</li>
+              <li>Ensure weight/axle compliance for all outbound trucks</li>
+              <li>Coordinate route sequencing with optimised container loads</li>
+              <li>Reduce empty-run ratios and consolidate shipment legs</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ──────────────────────────────────────────────────────────
+         SLIDE 6 — BUSINESS IMPACT
+         ────────────────────────────────────────────────────────── -->
+    <div class="slide" data-slide="5">
+      <div class="slide-corner top-left"></div>
+      <div class="slide-corner bottom-right"></div>
+
+      <div class="slide-inner">
+        <div style="text-align:center;">
+          <div class="slide-section-label" style="justify-content: center;">
+            <i data-lucide="trending-up" style="width:14px; height:14px;"></i>
+            Business Impact
+          </div>
+          <h2 class="slide-heading" style="text-align:center;">Measurable <span style="color: var(--coke-red);">Value Delivered</span></h2>
+        </div>
+
+        <div class="impact-grid">
+          <!-- Logistics Cost -->
+          <div class="impact-card">
+            <div class="impact-icon">
+              <i data-lucide="piggy-bank" style="width:24px;height:24px;"></i>
+            </div>
+            <div class="impact-metric" data-count-to="42" data-count-suffix="%" data-count-decimals="0">0%</div>
+            <div class="impact-metric-label">Logistics Cost Reduction</div>
+            <div class="impact-metric-desc">Fewer half-loaded dispatches means fewer total trips, driving significant per-unit transport savings.</div>
+          </div>
+
+          <!-- Operational Smoothness -->
+          <div class="impact-card">
+            <div class="impact-icon">
+              <i data-lucide="activity" style="width:24px;height:24px;"></i>
+            </div>
+            <div class="impact-metric" data-count-to="3.2" data-count-suffix="x" data-count-decimals="1">0x</div>
+            <div class="impact-metric-label">Operational Smoothness</div>
+            <div class="impact-metric-desc">Cross-week SKU balancing eliminates demand spikes and flattens dispatch scheduling across planning horizons.</div>
+          </div>
+
+          <!-- Incremental Margin -->
+          <div class="impact-card">
+            <div class="impact-icon">
+              <i data-lucide="badge-dollar-sign" style="width:24px;height:24px;"></i>
+            </div>
+            <div class="impact-metric" data-count-to="18" data-count-suffix="%" data-count-decimals="0">0%</div>
+            <div class="impact-metric-label">Incremental Margin / Order</div>
+            <div class="impact-metric-desc">Reduced logistics overhead drops directly to the bottom line on every dispatched order.</div>
+          </div>
+        </div>
+
+        <!-- Utilisation Ring Charts -->
+        <div class="utilization-ring-container">
+          <div class="util-ring-group">
+            <svg class="util-ring-svg" viewBox="0 0 100 100">
+              <circle class="util-ring-bg" cx="50" cy="50" r="38"/>
+              <circle class="util-ring-fill before-ring" cx="50" cy="50" r="38" data-ring-pct="50"/>
+            </svg>
+            <div class="util-ring-label">Before</div>
+            <div class="util-ring-pct" style="color: var(--danger-red);">~50%</div>
+          </div>
+
+          <div class="util-arrow">
+            <i data-lucide="arrow-right" style="width:28px;height:28px;"></i>
+            +50pp
+          </div>
+
+          <div class="util-ring-group">
+            <svg class="util-ring-svg" viewBox="0 0 100 100">
+              <circle class="util-ring-bg" cx="50" cy="50" r="38"/>
+              <circle class="util-ring-fill after-ring" cx="50" cy="50" r="38" data-ring-pct="98"/>
+            </svg>
+            <div class="util-ring-label">After</div>
+            <div class="util-ring-pct" style="color: var(--success-green);">~98%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ──────────────────────────────────────────────────────────
+         SLIDE 7 — INTEGRATION ECOSYSTEM
+         ────────────────────────────────────────────────────────── -->
+    <div class="slide" data-slide="6">
+      <div class="slide-corner top-left"></div>
+      <div class="slide-corner bottom-right"></div>
+
+      <div class="slide-inner" style="text-align:center;">
+        <div class="slide-section-label" style="justify-content: center;">
+          <i data-lucide="plug-zap" style="width:14px; height:14px;"></i>
+          Integration Ecosystem
+        </div>
+        <h2 class="slide-heading" style="text-align:center;">Enterprise-Grade <span style="color: var(--coke-red);">Connectivity</span></h2>
+        <p class="slide-text" style="text-align:center; max-width:640px; margin: 0 auto;">
+          TruckFill integrates seamlessly with Coca-Cola's enterprise stack — pulling order data, computing optimisations in the cloud, and syncing dispatch plans back to transportation management.
+        </p>
+
+        <div class="integration-hub">
+          <!-- Center hub node -->
+          <div class="integration-center">
+            <div class="integration-center-icon">
+              <i data-lucide="brain" style="width:28px;height:28px;"></i>
+            </div>
+            <span class="integration-center-label">TruckFill</span>
+          </div>
+
+          <!-- Connector lines -->
+          <div class="integration-connectors">
+            <div class="connector-line"></div>
+            <div class="connector-line"></div>
+            <div class="connector-line"></div>
+          </div>
+
+          <!-- Spoke cards -->
+          <div class="integration-spokes">
+            <!-- SAP TM -->
+            <div class="integration-spoke-card">
+              <div class="spoke-icon sap">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="2" y="3" width="20" height="18" rx="3"/>
+                  <text x="12" y="15" fill="currentColor" stroke="none" font-size="6" font-weight="800" text-anchor="middle" font-family="Inter, sans-serif">SAP</text>
+                </svg>
+              </div>
+              <div class="spoke-name">SAP TM</div>
+              <div class="spoke-role">Transportation Management — shipment execution, freight costing, carrier selection & compliance tracking</div>
+            </div>
+
+            <!-- Azure -->
+            <div class="integration-spoke-card">
+              <div class="spoke-icon azure">
+                <i data-lucide="cloud" style="width:22px;height:22px;"></i>
+              </div>
+              <div class="spoke-name">Microsoft Azure</div>
+              <div class="spoke-role">Cloud compute & AI — constraint solver runtime, ML model hosting, data lake for historical fill analytics</div>
+            </div>
+
+            <!-- Salesforce -->
+            <div class="integration-spoke-card">
+              <div class="spoke-icon salesforce">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M19 15c1.5-1 2-3 1-5s-3-3-5-2c-1-2-3-3-5-2s-3 3-2 5c-2 1-3 3-2 5s3 3 5 2c1 2 3 3 5 2s3-3 2-5z"/>
+                </svg>
+              </div>
+              <div class="spoke-name">Salesforce</div>
+              <div class="spoke-role">CRM & Orders — bottler order capture, demand signals, account-level fulfilment rules & SLA management</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ──────────────────────────────────────────────────────────
+         SLIDE 8 — SUMMARY
+         ────────────────────────────────────────────────────────── -->
+    <div class="slide" data-slide="7">
+      <div class="slide-corner top-left"></div>
+      <div class="slide-corner bottom-right"></div>
+
+      <div class="slide-inner summary-layout">
+        <div class="slide-section-label" style="justify-content: center;">
+          <i data-lucide="check-square" style="width:14px; height:14px;"></i>
+          Key Takeaways
+        </div>
+        <h2 class="slide-heading" style="text-align:center;">Transforming Dispatch<br><span style="color: var(--coke-red);">Intelligence</span></h2>
+
+        <div class="summary-takeaways">
+          <div class="takeaway-card">
+            <div class="takeaway-number">01</div>
+            <h4>Eliminate Blind Dispatch</h4>
+            <p>Full SKU-level visibility into every container before it leaves the warehouse.</p>
+          </div>
+          <div class="takeaway-card">
+            <div class="takeaway-number">02</div>
+            <h4>Maximise Every Cubic Metre</h4>
+            <p>3D constraint-based stacking pushes fill rates from ~50% to near 100%.</p>
+          </div>
+          <div class="takeaway-card">
+            <div class="takeaway-number">03</div>
+            <h4>Cross-Week Smoothing</h4>
+            <p>Hold/pull SKUs across planning weeks to balance capacity utilisation.</p>
+          </div>
+          <div class="takeaway-card">
+            <div class="takeaway-number">04</div>
+            <h4>Direct Margin Uplift</h4>
+            <p>42% logistics cost reduction and 18% incremental margin per order.</p>
+          </div>
+        </div>
+
+        <div class="summary-cta">
+          <p class="summary-cta-text">Ready to optimise your dispatch operations?</p>
+          <p class="summary-brand">The Coca-Cola Company — Logistics AI Division</p>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /slide-deck -->
+
+  <!-- ============================================================
+       NAVIGATION
+       ============================================================ -->
+  <div class="slide-nav">
+    <button class="nav-arrow" id="navPrev" aria-label="Previous slide" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="nav-dots"></div>
+    <button class="nav-arrow" id="navNext" aria-label="Next slide">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
+  </div>
+
+  <!-- Slide Counter -->
+  <div class="slide-counter">
+    <span class="current-num">01</span> / <span class="total-num">08</span>
+  </div>
+
+  <!-- ============================================================
+       SCRIPTS
+       ============================================================ -->
+  <script src="js/slides.js"></script>
+  <script>
+    // Initialize Lucide icons after DOM load
+    document.addEventListener('DOMContentLoaded', function() {
+      if (window.lucide) {
+        lucide.createIcons();
+      }
+    });
+  </script>
+
+</body>
+</html>
