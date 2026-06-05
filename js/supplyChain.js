@@ -523,25 +523,97 @@ class SupplyChainSimulator {
     this.ctx.restore();
   }
 
-  // Node 1: Concentrate Sourcing & Chemistry
+  // Node 1: Raw Materials Sourcing (🌿)
   drawStage1Animation(x, y) {
+    this.ctx.lineWidth = 1.5;
+    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+
+    // Draw raw material canisters (Cans / Glass structures)
+    // Left canister (Aluminum outline)
+    this.ctx.beginPath();
+    this.ctx.roundRect ? this.ctx.roundRect(x - 60, y - 15, 25, 45, 4) : this.ctx.rect(x - 60, y - 15, 25, 45);
+    this.ctx.stroke();
+    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+    this.ctx.fill();
+
+    // Right canister (Water container outline)
+    this.ctx.beginPath();
+    this.ctx.roundRect ? this.ctx.roundRect(x - 25, y - 25, 30, 55, 8) : this.ctx.rect(x - 25, y - 25, 30, 55);
+    this.ctx.stroke();
+    this.ctx.fillStyle = 'rgba(76, 201, 240, 0.05)';
+    this.ctx.fill();
+
+    // Purified water level wave inside container
+    this.ctx.save();
+    this.ctx.beginPath();
+    this.ctx.roundRect ? this.ctx.roundRect(x - 25, y - 25, 30, 55, 8) : this.ctx.rect(x - 25, y - 25, 30, 55);
+    this.ctx.clip();
+    
+    this.ctx.beginPath();
+    const waveOffset = Date.now() * 0.005;
+    const waveHeight = Math.sin(waveOffset) * 2;
+    this.ctx.moveTo(x - 25, y + 10 + waveHeight);
+    this.ctx.quadraticCurveTo(x - 10, y + 10 - waveHeight, x + 5, y + 10 + waveHeight);
+    this.ctx.lineTo(x + 5, y + 35);
+    this.ctx.lineTo(x - 25, y + 35);
+    this.ctx.closePath();
+    this.ctx.fillStyle = 'rgba(76, 201, 240, 0.35)'; // Cyan water
+    this.ctx.fill();
+    this.ctx.restore();
+
+    // Floating natural ingredients: leaves (green) and sugar crystals (yellow/white)
+    if (Math.random() < 0.12) {
+      const isLeaf = Math.random() > 0.5;
+      this.particles.push({
+        x: x - 80 + Math.random() * 40,
+        y: y - 40,
+        r: isLeaf ? (Math.random() * 3 + 2) : (Math.random() * 2 + 1),
+        speedY: Math.random() * 1 + 0.8,
+        speedX: Math.random() * 0.4 - 0.2,
+        isLeaf: isLeaf,
+        isSugar: !isLeaf
+      });
+    }
+
+    this.particles.forEach((p) => {
+      if ((p.isLeaf || p.isSugar) && p.y < y + 30) {
+        this.ctx.beginPath();
+        if (p.isLeaf) {
+          // Draw leaf shape
+          this.ctx.fillStyle = '#72EFDD'; // Mint green leaf
+          this.ctx.arc(p.x, p.y, p.r, 0, Math.PI, true);
+          this.ctx.lineTo(p.x + p.r, p.y);
+          this.ctx.fill();
+        } else {
+          // Draw sugar crystal (hexagon)
+          this.ctx.fillStyle = 'rgba(255, 255, 200, 0.8)'; // Sweetener yellow
+          this.ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          this.ctx.fill();
+        }
+        p.y += p.speedY;
+        p.x += p.speedX;
+      }
+    });
+
+    // Descriptive labels
+    this.ctx.fillStyle = '#fff';
+    this.ctx.font = '600 12px var(--font-heading)';
+    this.ctx.textAlign = 'left';
+    this.ctx.fillText("GLOBAL RAW INGREDIENTS SOURCING", x + 20, y - 12);
+    this.ctx.font = '400 10px var(--font-body)';
+    this.ctx.fillStyle = 'var(--text-secondary)';
+    this.ctx.fillText("Purified water (local) & sweeteners (global)", x + 20, y + 6);
+    this.ctx.fillText("Sustainable PET, glass, and aluminum mining", x + 20, y + 22);
+  }
+
+  // Node 2: Manufacturing & Concentrate Production (🏭)
+  drawStage2Animation(x, y) {
     // Draw mixing flasks & formula bubbles
     this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
     this.ctx.lineWidth = 2;
     
-    // Flask body
-    this.ctx.beginPath();
-    this.ctx.moveTo(x - 50, y + 40);
-    this.ctx.lineTo(x - 20, y - 20);
-    this.ctx.lineTo(x - 20, y - 40);
-    this.ctx.lineTo(x - 30, y - 40);
-    this.ctx.lineTo(x - 10, y - 40);
-    this.ctx.lineTo(x - 10, y - 40);
-    this.ctx.lineTo(x - 20, y - 40);
-    this.ctx.lineTo(x - 20, y - 20);
-    this.ctx.lineTo(x - 50, y + 40);
-    
-    // Replaced with mirror shape
+    // Flask outline shape
     this.ctx.beginPath();
     this.ctx.moveTo(x - 15, y - 40);
     this.ctx.lineTo(x + 15, y - 40);
@@ -603,68 +675,11 @@ class SupplyChainSimulator {
     this.ctx.fillStyle = '#fff';
     this.ctx.font = '600 12px var(--font-heading)';
     this.ctx.textAlign = 'left';
-    this.ctx.fillText("SECRET CONCENTRATE Blending...", x + 60, y - 10);
+    this.ctx.fillText("SECRET MERCHANDISE 7X FORMULA", x + 55, y - 12);
     this.ctx.font = '400 10px var(--font-body)';
     this.ctx.fillStyle = 'var(--text-secondary)';
-    this.ctx.fillText("Formula stewardship & export licensing", x + 60, y + 8);
-    this.ctx.fillText("Pure syrup extracts & ingredients", x + 60, y + 24);
-  }
-
-  // Node 2: Water Filtration & Prep
-  drawStage2Animation(x, y) {
-    // Water tank with flowing input
-    this.ctx.lineWidth = 2;
-    this.ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
-    
-    // Outer tank shape
-    this.ctx.strokeRect(x - 50, y - 40, 90, 80);
-    this.ctx.fillStyle = 'rgba(255,255,255,0.01)';
-    this.ctx.fillRect(x - 50, y - 40, 90, 80);
-
-    // Multi-barrier carbon layers
-    this.ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
-    this.ctx.fillRect(x - 50, y - 25, 90, 8); // Carbon filter bed
-    this.ctx.fillRect(x - 50, y - 5, 90, 8);  // Reverse osmosis grid
-    this.ctx.fillRect(x - 50, y + 15, 90, 8);  // UV sanitation row
-
-    // Liquid filling up the bottom half of the tank
-    const waterGrad = this.ctx.createLinearGradient(x - 50, y + 15, x - 50, y + 40);
-    waterGrad.addColorStop(0, 'rgba(76, 201, 240, 0.3)');
-    waterGrad.addColorStop(1, 'rgba(76, 201, 240, 0.7)');
-    
-    this.ctx.fillStyle = waterGrad;
-    this.ctx.fillRect(x - 50, y + 23, 90, 17);
-
-    // Dropping water particles falling through layers
-    if (Math.random() < 0.25) {
-      this.particles.push({
-        x: x - 40 + Math.random() * 70,
-        y: y - 40,
-        r: Math.random() * 2 + 1,
-        speedY: Math.random() * 2 + 1,
-        isWater: true
-      });
-    }
-
-    this.ctx.fillStyle = '#4CC9F0';
-    this.particles.forEach((p) => {
-      if (p.isWater && p.y < y + 25) {
-        this.ctx.beginPath();
-        this.ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        this.ctx.fill();
-        p.y += p.speedY;
-      }
-    });
-
-    // Label Info
-    this.ctx.fillStyle = '#fff';
-    this.ctx.font = '600 12px var(--font-heading)';
-    this.ctx.textAlign = 'left';
-    this.ctx.fillText("MULTI-BARRIER WATER FILTER", x + 60, y - 10);
-    this.ctx.font = '400 10px var(--font-body)';
-    this.ctx.fillStyle = 'var(--text-secondary)';
-    this.ctx.fillText("Reverse Osmosis & Carbon filter cells", x + 60, y + 8);
-    this.ctx.fillText("Purity output: 99.997% pure H2O", x + 60, y + 24);
+    this.ctx.fillText("High-density concentrate export plants", x + 55, y + 6);
+    this.ctx.fillText("Saves logistics carbon vs finished weight", x + 55, y + 22);
   }
 
   // Node 3: High-speed Packaging & Carbonation

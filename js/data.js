@@ -171,68 +171,101 @@ const COKE_DATA = {
   supplyChainSteps: [
     {
       step: 1,
-      title: "Concentrate Sourcing",
-      subtitle: "The Master Secret Formulation",
-      icon: "flask",
-      description: "The journey begins with the precision blending of highly guarded, concentrated ingredients at advanced corporate manufacturing facilities. This secret formula is distributed to regional bottling partners worldwide.",
+      title: "Raw Materials Sourcing",
+      subtitle: "🌿 Global Sourcing, Local Sourcing",
+      icon: "leaf",
+      description: "Key raw materials are sourced globally under rigid standards. Water, the primary ingredient (~90%), is purified locally in each market, while specialized natural extracts, sweeteners, and sustainable packaging (PET, aluminum, glass) are sourced from certified partners.",
       details: [
-        "Raw ingredients are sourced under rigid ethical and quality standards globally.",
-        "Concentrate syrups are formulated in a dry/liquid base to protect the intellectual formula.",
-        "Precision shipping systems deliver the concentrate globally with micro-controlled thermal logs.",
-        "This concentrate represents the brand equity, ensuring identical taste in 200+ countries."
+        "Water is sourced locally in each bottling market and carbonated locally.",
+        "Sugar and sweeteners are sourced from tropical regions (sugarcane) or local farms (HFCS).",
+        "Coca leaf extract is DEA-licensed and processed at a single facility (Stepan Company, NJ).",
+        "Packaging (aluminum cans, PET bottles, glass) is sourced from sustainable mining/petrochemical partners."
       ]
     },
     {
       step: 2,
-      title: "Water Filtration & Syrup Prep",
-      subtitle: "Securing Pure Ingredients Locally",
-      icon: "droplet",
-      description: "Local bottlers receive the concentrate and mix it with high-purity local ingredients. Water undergoes intensive multi-barrier filtration to ensure a standard of molecular purity.",
+      title: "Manufacturing & Concentrate",
+      subtitle: "🏭 Atlanta & Ireland Formula Blending",
+      icon: "flask",
+      description: "The Merchandise 7X secret formula concentrate is manufactured at highly controlled corporate concentrate plants, notably in Atlanta, Georgia and Ireland. This high-density concentrate is then shipped globally to decentralized partners, avoiding the carbon footprint of shipping water.",
       details: [
-        "Local municipal water is filtered via carbon beds, reverse osmosis, and ultraviolet sterilization.",
-        "Pristine filtered water is blended with local sweeteners (cane sugar or beet sugar) to create simple syrup.",
-        "Secret concentrate is combined with simple syrup to create the final beverage syrup.",
-        "Automated gas-liquid contactors carbonate the beverage under pressurized carbon dioxide (CO2)."
+        "Formulated under strict confidentiality guidelines at corporate sites.",
+        "Shipped worldwide via micro-controlled thermal logistics paths to ~900 partners.",
+        "Eliminates heavy transport carbon footprint by shipping dry/liquid raw syrup base.",
+        "Secures trademark branding equity for identical flavor profiles globally."
       ]
     },
     {
       step: 3,
-      title: "Precision Bottling & Packaging",
-      subtitle: "High-Speed Automation in Action",
-      icon: "package",
-      description: "Sterile bottles (recycled PET, glass, or aluminum cans) enter high-speed monobloc lines where they are blown, washed, filled, capped, and inspected at up to 100,000 containers per hour.",
+      title: "The Bottling Partner Model",
+      subtitle: "🤝 The Asset-Light Franchise System",
+      icon: "handshake",
+      description: "The heart of Coca-Cola's scale is a franchise system. The Coca-Cola Company sells syrup concentrate to independent/franchised bottlers. The bottlers handle localized capital-heavy manufacturing, pure water mixing, sweetener/CO2 blending, and packaging.",
       details: [
-        "Preforms are blow-molded on-site into finalized PET plastic bottles using high-pressure air.",
-        "Containers are sanitized, double-rinsed, and precision filled with carbonated soda at near-freezing temperatures.",
-        "Crown caps or screw closures are sealed in milliseconds to lock in carbonation pressure.",
-        "Sophisticated electronic vision inspectors reject any under-filled or mislabeled packages."
+        "Franchise bottlers include Coca-Cola FEMSA, Coca-Cola HBC, and CCEP.",
+        "Bottlers invest in physical capital, plants, high-speed lines, and warehouse automation.",
+        "Concentrate is locally blended with purified water, local sweeteners, and pressurized CO2.",
+        "Keeps corporate capital requirements lean while enabling exponential global scale."
       ]
     },
     {
       step: 4,
-      title: "Smart Logistics & Transport",
-      subtitle: "Dynamic Routing to Global Retailers",
+      title: "Distribution & Logistics",
+      subtitle: "📦 Retail, Vending, & Fountain Delivery",
       icon: "truck",
-      description: "Coded pallets are transported to fully automated high-bay warehouses where robots organize inventory. Electric or clean-diesel fleets deliver the beverages to millions of stores, restaurants, and vending machines.",
+      description: "Bottlers distribute the finished beverages directly to retailers, grocery stores, restaurants, fountains, and vending machines. A mix of Direct Store Delivery (DSD), cold-chain transport, and automated warehouse fulfillment services ensures global availability.",
       details: [
-        "Warehouse execution systems (WES) coordinate automated laser-guided vehicles (AGVs) for pallet loading.",
-        "Dynamic logistics algorithms optimize shipping routes to reduce fuel burn and carbon emissions.",
-        "Direct-to-store distribution programs route beverages to hypermarkets down to micro-retail centers.",
-        "Vending machines equipped with telemetry report live stock data to delivery drivers in real-time."
+        "Fulfillments use Direct Store Delivery (DSD) to ensure fresh shelf representation.",
+        "Dynamic routing systems optimize fleets to reduce greenhouse gas emissions.",
+        "Integrated cold-chain logistics protect carbonation and quality in hot regions.",
+        "Reaches 200+ countries, serving billions of refreshing beverages daily."
       ]
     },
     {
       step: 5,
-      title: "Consumer Joy & Circular Recycling",
-      subtitle: "Completing the Sustainable Loop",
+      title: "Sustainability & Circularity",
+      subtitle: "♻️ World Without Waste Initiatives",
       icon: "refresh-cw",
-      description: "The product is purchased and enjoyed. Coca-Cola works alongside global bottlers to ensure a 'World Without Waste' by recovering and recycling 100% of equivalent packaging by 2030.",
+      description: "To combat Scope 3 emissions and waste, Coca-Cola and its bottlers operate circular loops. The 'World Without Waste' goal targets recycling 100% of equivalent packaging by 2030, replenishing local water usage, and implementing food-grade recycled rPET.",
       details: [
-        "Beverages are chilled and enjoyed by millions of consumers daily, providing refreshing moments.",
-        "Post-consumer bottles are collected via deposit schemes and reverse vending machines.",
-        "Used PET is sorted, crushed, washed, and pelletized back into pristine food-grade rPET.",
-        "The recycled pellets are reused in Step 3 preform blow-molding, completing a carbon-efficient circular loop."
+        "Goal of 100% recyclable packaging and at least 50% recycled material in bottles by 2030.",
+        "Water replenishment programs offset 100%+ of operational water used back to local watersheds.",
+        "Used PET containers are collected, washed, pelletized, and blown back into new bottles.",
+        "Guarantees a carbon-efficient, closed-loop value chain."
       ]
+    }
+  ],
+
+  supplyChainRisks: [
+    {
+      risk: "Water Scarcity",
+      impact: "High",
+      description: "Water is ~90% of the final product. Climate change and localized droughts pose high threats to water availability and local community relations.",
+      mitigation: "Implementing 100%+ water replenishment in stressed areas, advanced wastewater recycling, and improving water use efficiency metrics."
+    },
+    {
+      risk: "Sugar Price Volatility",
+      impact: "Medium",
+      description: "Fluctuations in commodity prices for cane sugar, beet sugar, and HFCS sweetening agents affect gross margins directly.",
+      mitigation: "Using multi-year commodity hedging contracts, diversifying sugar supplier geography, and growing zero/low sugar portfolios."
+    },
+    {
+      risk: "Geopolitical Disruptions",
+      impact: "Medium",
+      description: "Sourcing ingredients and materials (like aluminum, specialty flavor chemicals) globally creates exposure to trade conflicts, tariffs, and logjams.",
+      mitigation: "Establishing dual-source raw material agreements, holding inventory buffers for critical flavor extracts, and localizing manufacturing."
+    },
+    {
+      risk: "Packaging Regulations",
+      impact: "High",
+      description: "Dynamic plastic bans, single-use taxes, and container deposit return schemes (DRS) create compliance variances globally.",
+      mitigation: "Pioneering 100% rPET in Western Europe, scaling lightweight glass, and partnering on local recycling infrastructure schemes."
+    },
+    {
+      risk: "Bottler Dependency",
+      impact: "Medium",
+      description: "Severe reliance on independent, franchised bottlers for local manufacturing capacity, distribution capital, and field execution.",
+      mitigation: "Long-term partnership contracts, joint governance councils, and strategic equity stakes in major bottling anchor franchises."
     }
   ]
 };
