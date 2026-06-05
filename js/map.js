@@ -144,6 +144,7 @@ function renderBottlerPins() {
 }
 
 function displayBottlerProfileInSidebar(bottler) {
+  switchSidebarTab('profile');
   const promptView = document.getElementById('sidebarPromptView');
   const profileView = document.getElementById('sidebarProfileView');
   const regionInfo = COKE_DATA.regions[bottler.region];
@@ -205,6 +206,7 @@ function displayBottlerProfileInSidebar(bottler) {
 }
 
 function displayHeadquartersProfileInSidebar() {
+  switchSidebarTab('profile');
   const promptView = document.getElementById('sidebarPromptView');
   const profileView = document.getElementById('sidebarProfileView');
   const hq = COKE_DATA.headquarters;
@@ -345,4 +347,101 @@ function linkRegionCardToMap(regionId) {
   
   // Scroll map section smoothly into focus
   document.getElementById('map-hub').scrollIntoView({ behavior: 'smooth' });
+}
+
+// Interactive Sidebar Tab Logic
+function switchSidebarTab(tabId) {
+  // Deactivate all tab buttons
+  document.querySelectorAll('.sidebar-tab-btn').forEach(btn => {
+    btn.classList.remove('active');
+  });
+  
+  // Deactivate all tab content elements
+  document.querySelectorAll('.sidebar-tab-content').forEach(content => {
+    content.classList.remove('active');
+  });
+  
+  // Activate selected button and content
+  let btnId, contentId;
+  if (tabId === 'profile') {
+    btnId = 'tabBtnProfile';
+    contentId = 'tabContentProfile';
+  } else if (tabId === 'stages') {
+    btnId = 'tabBtnStages';
+    contentId = 'tabContentStages';
+    renderSidebarStagesList();
+  } else if (tabId === 'risks') {
+    btnId = 'tabBtnRisks';
+    contentId = 'tabContentRisks';
+    renderSidebarRisksList();
+  }
+  
+  const activeBtn = document.getElementById(btnId);
+  const activeContent = document.getElementById(contentId);
+  
+  if (activeBtn) activeBtn.classList.add('active');
+  if (activeContent) activeContent.classList.add('active');
+}
+
+function renderSidebarStagesList() {
+  const container = document.getElementById('sidebarStagesList');
+  if (!container) return;
+  
+  container.innerHTML = `
+    <div class="sidebar-stages-header">
+      <h4>Global Supply Chain Phases</h4>
+      <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.8rem;">Interactive overview: Tap to highlight stages in the simulator above.</p>
+    </div>
+    <div class="sidebar-stages-wrapper" style="display:flex; flex-direction:column; gap:0.6rem; overflow-y:auto; max-height:420px; scrollbar-width:thin;">
+      ${COKE_DATA.supplyChainSteps.map(step => `
+        <div class="sidebar-stage-card" onclick="syncMapStageToSimulator(${step.step - 1})" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-radius:12px; padding:0.8rem; cursor:pointer; transition: all 0.25s; display:flex; gap:0.6rem; align-items:flex-start;">
+          <div class="stage-badge-small" style="width:20px; height:20px; border-radius:50%; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.15); display:flex; justify-content:center; align-items:center; font-size:0.75rem; font-weight:700; color:var(--text-secondary); flex-shrink:0;">${step.step}</div>
+          <div class="stage-card-body">
+            <h5 style="font-size:0.85rem; font-weight:600; color:var(--text-primary); margin-bottom:0.15rem;">${step.title}</h5>
+            <p style="font-size:0.72rem; color:var(--text-secondary); line-height:1.4; margin:0;">${step.description}</p>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function syncMapStageToSimulator(stageIndex) {
+  const target = document.getElementById('supply-chain');
+  if (target) {
+    target.scrollIntoView({ behavior: 'smooth' });
+  }
+  if (window.simulatorInstance) {
+    window.simulatorInstance.seekToStage(stageIndex);
+  }
+}
+
+function renderSidebarRisksList() {
+  const container = document.getElementById('sidebarRisksList');
+  if (!container) return;
+  
+  container.innerHTML = `
+    <div class="sidebar-risks-header">
+      <h4>Global Supply Risks</h4>
+      <p style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 0.8rem;">Critical vulnerabilities &amp; mitigation protocols.</p>
+    </div>
+    <div class="sidebar-risks-wrapper" style="display:flex; flex-direction:column; gap:0.6rem; overflow-y:auto; max-height:420px; scrollbar-width:thin;">
+      ${COKE_DATA.supplyChainRisks.map(r => {
+        const impactClass = r.impact.toLowerCase();
+        const color = impactClass === 'high' ? 'var(--coke-red)' : '#FF9F1C';
+        return `
+          <div class="sidebar-risk-card" style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); border-left:3px solid ${color}; border-radius:4px 12px 12px 4px; padding:0.8rem; display:flex; flex-direction:column; gap:0.4rem;">
+            <div class="risk-card-top" style="display:flex; justify-content:space-between; align-items:center;">
+              <h5 style="font-size:0.85rem; font-weight:700; color:var(--text-primary); margin:0;">${r.risk}</h5>
+              <span class="risk-badge-mini ${impactClass}" style="font-size:0.6rem; font-weight:700; text-transform:uppercase; padding:0.1rem 0.4rem; border-radius:4px; background:rgba(255,255,255,0.04); border:1px solid ${color}40; color:${color};">${r.impact}</span>
+            </div>
+            <p class="risk-card-desc" style="font-size:0.72rem; color:var(--text-secondary); line-height:1.45; margin:0;">${r.description}</p>
+            <div class="risk-card-mitigation" style="font-size:0.7rem; color:rgba(255,255,255,0.85); background:rgba(255,255,255,0.01); border:1px solid rgba(255,255,255,0.03); border-radius:6px; padding:0.4rem 0.5rem; line-height:1.45;">
+              <strong style="color:${color}; font-weight:600;">Mitigation:</strong> ${r.mitigation}
+            </div>
+          </div>
+        `;
+      }).join('')}
+    </div>
+  `;
 }

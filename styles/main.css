@@ -1852,3 +1852,223 @@ footer {
     text-align: center;
   }
 }
+
+/* ==========================================================================
+   INTERACTIVE SIDEBAR TABS & TELEMETRY
+   ========================================================================== */
+.sidebar-tabs {
+  display: flex;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  margin-bottom: 1rem;
+  padding-bottom: 0.4rem;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.sidebar-tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 0.4rem 0.65rem;
+  font-size: 0.75rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  position: relative;
+  transition: all 0.25s ease-in-out;
+  border-radius: 6px;
+}
+
+.sidebar-tab-btn i {
+  width: 13px;
+  height: 13px;
+  opacity: 0.7;
+}
+
+.sidebar-tab-btn:hover {
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.sidebar-tab-btn.active {
+  color: var(--coke-red);
+  background: rgba(244, 0, 9, 0.07);
+}
+
+.sidebar-tab-content {
+  display: none;
+  flex-direction: column;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+.sidebar-tab-content.active {
+  display: flex;
+}
+
+.sidebar-stages-list, .sidebar-risks-list {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sidebar-stages-header h4, .sidebar-risks-header h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  margin: 0 0 0.15rem 0;
+  color: var(--text-primary);
+}
+
+.sidebar-stage-card:hover {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border-color: rgba(244, 0, 9, 0.3) !important;
+  transform: translateX(2px);
+}
+
+/* ==========================================================================
+   KEY OPERATIONAL RISKS DASHBOARD
+   ========================================================================== */
+#risks-dashboard {
+  padding: 6rem 0;
+  background: radial-gradient(circle at 50% 0%, #12141a 0%, #07080b 100%);
+  border-top: 1px solid rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+}
+
+.risks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  gap: 1.75rem;
+  margin-top: 3rem;
+}
+
+.risk-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-glass);
+  border-radius: 20px;
+  padding: 1.75rem;
+  box-shadow: var(--card-shadow);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  position: relative;
+}
+
+.risk-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.45), 0 0 20px rgba(255, 255, 255, 0.02);
+}
+
+.risk-card.high-impact {
+  border-top: 3px solid var(--coke-red);
+}
+
+.risk-card.medium-impact {
+  border-top: 3px solid #FF9F1C;
+}
+
+.risk-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.risk-impact-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  letter-spacing: 0.5px;
+}
+
+.risk-impact-tag.high {
+  background: rgba(244, 0, 9, 0.08);
+  color: var(--coke-red);
+  border: 1px solid rgba(244, 0, 9, 0.15);
+}
+
+.risk-impact-tag.medium {
+  background: rgba(255, 159, 28, 0.08);
+  color: #FF9F1C;
+  border: 1px solid rgba(255, 159, 28, 0.15);
+}
+
+.risk-icon-wrapper {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: var(--text-secondary);
+}
+
+.risk-card.high-impact .risk-icon-wrapper {
+  color: var(--coke-red);
+  box-shadow: 0 0 10px rgba(244, 0, 9, 0.1);
+  border-color: rgba(244, 0, 9, 0.2);
+}
+
+.risk-card.medium-impact .risk-icon-wrapper {
+  color: #FF9F1C;
+  box-shadow: 0 0 10px rgba(255, 159, 28, 0.15);
+  border-color: rgba(255, 159, 28, 0.2);
+}
+
+.risk-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.risk-desc {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.risk-mitigation-box {
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  padding: 0.9rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.risk-mitigation-box strong {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.risk-card.high-impact .risk-mitigation-box strong {
+  color: var(--coke-red);
+}
+
+.risk-card.medium-impact .risk-mitigation-box strong {
+  color: #FF9F1C;
+}
+
+.risk-mitigation-box p {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  line-height: 1.45;
+  margin: 0;
+}
+

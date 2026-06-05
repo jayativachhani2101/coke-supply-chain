@@ -20,9 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 4. Initialize Interactive Supply Chain Player
-  let simulatorInstance;
   if (typeof SupplyChainSimulator === 'function') {
-    simulatorInstance = new SupplyChainSimulator('supplyChainCanvas');
+    window.simulatorInstance = new SupplyChainSimulator('supplyChainCanvas');
   }
 
   // 5. Scroll Interaction Listeners
